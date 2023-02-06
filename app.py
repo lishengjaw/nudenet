@@ -4,6 +4,7 @@ from request import Request
 import requests
 import os
 from constants import DEFAULT_NSFW_THRESHOLD
+import json
 
 app = Flask(__name__)
 path = os.path.dirname(os.path.abspath(__file__))
@@ -24,8 +25,9 @@ def detect_nsfw_images():
 
 
 def read_request():
-    urls = request.form.getlist('urls')
-    if len(urls) == 0:
+    data = json.loads(request.data)
+    urls = data.get('urls')
+    if not urls or len(urls) == 0:
         return None, "no urls found with the 'urls' key"
 
     file_path_to_file_content = {}
@@ -36,7 +38,7 @@ def read_request():
         else:
             return None, 'one or more urls are invalid'
 
-    nsfw_threshold_str = request.form.get('nsfw_threshold')
+    nsfw_threshold_str = data.get('nsfw_threshold')
     nsfw_threshold_float = DEFAULT_NSFW_THRESHOLD
     if nsfw_threshold_str:
         try:
