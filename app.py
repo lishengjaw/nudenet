@@ -3,7 +3,7 @@ from flask import Flask, request
 from request import Request
 import requests
 import os
-from constants import PORT_NUMBER, DEFAULT_NSFW_THRESHOLD
+from constants import DEFAULT_NSFW_THRESHOLD
 
 app = Flask(__name__)
 path = os.path.dirname(os.path.abspath(__file__))
